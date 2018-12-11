@@ -30,6 +30,10 @@ class DataObject implements DataObjectInterface, \ArrayAccess
      */
     public function getData($key = null)
     {
+        if (null === $key) {
+            return $this->data;
+        }
+        
         if (is_array($key)) {
             return $this->data;
         }
