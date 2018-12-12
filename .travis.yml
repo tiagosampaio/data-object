@@ -15,6 +15,5 @@ before_script:
     - composer install --no-interaction
 script:
     - composer test
-    - php vendor/bin/phpunit --coverage-clover build/coverage/xml
 after_script:
-    - php vendor/bin/codacycoverage clover build/coverage/xml
+    - vendor/bin/codacycoverage clover temp/coverage/xml/codacy.xml
