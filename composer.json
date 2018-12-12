@@ -35,6 +35,7 @@
       "mkdir -p temp/coverage/xml"
     ],
     "phpunit": [
+      "@make-dirs",
       "vendor/bin/phpunit -c dev/test/unit/phpunit.xml.dist dev/test/unit/ --coverage-html temp/coverage/html --coverage-clover temp/coverage/xml/codacy.xml"
     ],
     "phpcs": [
