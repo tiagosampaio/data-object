@@ -57,4 +57,9 @@ interface DataObjectInterface
      * @return array
      */
     public function export(array $fields = []);
+    
+    /**
+     * @return boolean
+     */
+    public function isEmpty();
 }

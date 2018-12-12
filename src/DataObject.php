@@ -26,6 +26,34 @@ class DataObject implements DataObjectInterface, \ArrayAccess
     }
     
     /**
+     * @param string $method
+     * @param array  $args
+     *
+     * @return array|bool|mixed|DataObject|DataObjectInterface|null
+     * @throws DataObjectException
+     */
+    public function __call($method, $args)
+    {
+        $key = $this->underscore(substr($method, 3));
+        
+        switch (substr($method, 0, 3)) {
+            case 'get':
+                $index = isset($args[0]) ? $args[0] : null;
+                return $this->getData($key);
+            case 'set':
+                $value = isset($args[0]) ? $args[0] : null;
+                return $this->setData($key, $value);
+            case 'uns':
+                return $this->unsetData($key);
+            case 'has':
+                return $this->hasData($key);
+        }
+        
+        $class = get_class($this);
+        throw new DataObjectException("The method {$method} does not exist in the class {$class}.");
+    }
+    
+    /**
      * {@inheritdoc}
      */
     public function getData($key = null)
@@ -110,6 +138,14 @@ class DataObject implements DataObjectInterface, \ArrayAccess
     }
     
     /**
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        return empty($this->data);
+    }
+    
+    /**
      * {@inheritdoc}
      */
     public function resetData()
@@ -154,7 +190,7 @@ class DataObject implements DataObjectInterface, \ArrayAccess
      */
     public function offsetSet($offset, $value)
     {
-        $this->data[$offset] = $value;
+        return $this->setData($offset, $value);
     }
     
     /**
@@ -166,7 +202,7 @@ class DataObject implements DataObjectInterface, \ArrayAccess
      */
     public function offsetExists($offset)
     {
-        return isset($this->data[$offset]);
+        return $this->hasData($offset);
     }
     
     /**
@@ -177,7 +213,7 @@ class DataObject implements DataObjectInterface, \ArrayAccess
      */
     public function offsetUnset($offset)
     {
-        unset($this->data[$offset]);
+        return $this->unsetData($offset);
     }
     
     /**
@@ -189,6 +225,20 @@ class DataObject implements DataObjectInterface, \ArrayAccess
      */
     public function offsetGet($offset)
     {
-        return isset($this->data[$offset]) ? $this->data[$offset] : null;
+        return $this->getData($offset);
+    }
+    
+    /**
+     * @param string $name
+     *
+     * @return string|null
+     */
+    private function underscore($name)
+    {
+        $result = preg_replace('/([A-Z]|[0-9]+)/', "_$1", $name);
+        $result = trim($result, '_');
+        $result = strtolower($result);
+        
+        return $result;
     }
 }

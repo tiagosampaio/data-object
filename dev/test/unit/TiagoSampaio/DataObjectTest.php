@@ -3,6 +3,8 @@
 namespace TiagoSampaioTest;
 
 use TiagoSampaio\DataObject;
+use TiagoSampaio\DataObjectException;
+use TiagoSampaio\DataObjectInterface;
 
 /**
  * Class DataObjectTest
@@ -182,8 +184,41 @@ class DataObjectTest extends \PHPUnit\Framework\TestCase
 
         $object->offsetSet('middle_name', 'Genius');
         $this->assertEquals('Genius', $object->offsetGet('middle_name'));
-        $this->assertEquals(true, $object->offsetExists('middle_name'));
+        $this->assertTrue(true, $object->offsetExists('middle_name'));
         $object->offsetUnset('middle_name');
-        $this->assertEquals(false, $object->offsetExists('middle_name'));
+        $this->assertFalse(false, $object->offsetExists('middle_name'));
+    }
+
+    /**
+     * @test
+     */
+    public function objectIsEmpty()
+    {
+        $data = [
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+        ];
+
+        $object = new DataObject($data);
+
+        $this->assertFalse($object->isEmpty());
+        $object->resetData();
+        $this->assertTrue($object->isEmpty());
+    }
+    
+    /**
+     * @test
+     */
+    public function testMagicSetter()
+    {
+        $object = new DataObject();
+        
+        $this->assertInstanceOf(DataObjectInterface::class, $object->setFirstName('Data Object'));
+        $this->assertEquals('Data Object', $object->getFirstName());
+        $this->assertTrue(true, $object->hasFirstName());
+        $this->assertInstanceOf(DataObjectInterface::class, $object->unsFirstName());
+        $this->assertFalse($object->hasFirstName());
+        $this->expectException(DataObjectException::class);
+        $object->assertFirstName();
     }
 }
