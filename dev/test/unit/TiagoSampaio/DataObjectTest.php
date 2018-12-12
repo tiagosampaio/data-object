@@ -53,6 +53,86 @@ class DataObjectTest extends \PHPUnit\Framework\TestCase
     
         $this->assertInstanceOf(DataObject::class, $object->addData(['last_name' => 'Doe']));
         $this->assertEquals('Doe', $object->getData('last_name'));
+
+        $this->assertInstanceOf(DataObject::class, $object->addData(['middle_name' => null]));
+        $this->assertEquals(null, $object->getData('middle_name'));
+    }
+
+    /**
+     * @test
+     */
+    public function hasData()
+    {
+        $data = [
+            'one' => 'Value One',
+            'two' => 'Value Two',
+        ];
+
+        $object = new DataObject($data);
+
+        $this->assertEquals(true, $object->hasData('one'));
+        $this->assertEquals(true, $object->hasData('two'));
+        $this->assertEquals(false, $object->hasData('three'));
+    }
+
+    /**
+     * @test
+     */
+    public function resetData()
+    {
+        $data = [
+            'one' => 'Value One',
+            'two' => 'Value Two',
+        ];
+
+        $object = new DataObject($data);
+
+        $this->assertEquals($data, $object->getData());
+        $this->assertInstanceOf(DataObject::class, $object->resetData());
+        $this->assertEquals([], $object->getData());
+    }
+
+    /**
+     * @test
+     */
+    public function getData()
+    {
+        $data = [
+            'one' => 'Value One',
+            'two' => 'Value Two',
+        ];
+
+        $object = new DataObject($data);
+
+        $this->assertEquals($data, $object->getData());
+        $this->assertEquals($data, $object->getData([]));
+        $this->assertEquals(null, $object->getData('not_found'));
+    }
+
+    /**
+     * @test
+     */
+    public function unsetData()
+    {
+        $data = [
+            'one' => 'Value One',
+            'two' => 'Value Two',
+        ];
+
+        $object = new DataObject($data);
+
+        $this->assertEquals($data, $object->getData());
+
+        $this->assertInstanceOf(DataObject::class, $object->unsetData('one'));
+        $this->assertEquals(['two' => 'Value Two'], $object->getData());
+
+        $object->setData($data);
+        $object->unsetData();
+        $this->assertEquals([], $object->getData());
+
+        $object->setData($data);
+        $object->unsetData(['one']);
+        $this->assertEquals(['two' => 'Value Two'], $object->getData());
     }
 
     /**
@@ -86,5 +166,24 @@ class DataObjectTest extends \PHPUnit\Framework\TestCase
         $object->setData($data);
 
         $this->assertEquals($data, $object->debug());
+    }
+
+    /**
+     * @test
+     */
+    public function offset()
+    {
+        $data = [
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+        ];
+
+        $object = new DataObject($data);
+
+        $object->offsetSet('middle_name', 'Genius');
+        $this->assertEquals('Genius', $object->offsetGet('middle_name'));
+        $this->assertEquals(true, $object->offsetExists('middle_name'));
+        $object->offsetUnset('middle_name');
+        $this->assertEquals(false, $object->offsetExists('middle_name'));
     }
 }
