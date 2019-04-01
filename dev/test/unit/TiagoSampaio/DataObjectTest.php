@@ -12,7 +12,6 @@ use TiagoSampaio\DataObjectInterface;
  */
 class DataObjectTest extends \PHPUnit\Framework\TestCase
 {
-
     /**
      * @test
      */
