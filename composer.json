@@ -1,52 +1,51 @@
 {
-  "name": "tiagosampaio/data-object",
-  "description": "Object to handle data.",
-  "type": "library",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Tiago Sampaio",
-      "email": "tiago@tiagosampaio.com"
+    "name": "tiagosampaio/data-object",
+    "description": "Object to handle data.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tiago Sampaio",
+            "email": "tiago@tiagosampaio.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": "^7.0||^8.0"
+    },
+    "require-dev": {
+        "codacy/coverage": "dev-master",
+        "phpunit/phpunit": "^9.5",
+        "squizlabs/php_codesniffer": "^3.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "TiagoSampaio\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "TiagoSampaioTest\\": "dev/test/unit/TiagoSampaio"
+        }
+    },
+    "scripts": {
+        "make-dirs": [
+            "mkdir -p temp/coverage/html",
+            "mkdir -p temp/coverage/xml"
+        ],
+        "phpunit": [
+            "@make-dirs",
+            "vendor/bin/phpunit -c dev/test/unit/phpunit.xml.dist dev/test/unit/ --coverage-html temp/coverage/html --coverage-clover temp/coverage/xml/codacy.xml"
+        ],
+        "phpcs": [
+            "vendor/bin/phpcs --standard=PSR2 --severity=1 src"
+        ],
+        "tests": [
+            "@phpunit",
+            "@phpcs"
+        ],
+        "post-autoload-dump": [
+            "@tests"
+        ]
     }
-  ],
-  "minimum-stability": "stable",
-  "require": {
-    "php":"^7.0||^8.0"
-  },
-  "require-dev": {
-    "codacy/coverage": "dev-master",
-    "phpunit/phpunit": "^6.4",
-    "fzaninotto/faker": "^1.8",
-    "squizlabs/php_codesniffer": "^3.3"
-  },
-  "autoload": {
-    "psr-4": {
-      "TiagoSampaio\\": "src/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "TiagoSampaioTest\\": "dev/test/unit/TiagoSampaio"
-    }
-  },
-  "scripts": {
-    "make-dirs": [
-      "mkdir -p temp/coverage/html",
-      "mkdir -p temp/coverage/xml"
-    ],
-    "phpunit": [
-      "@make-dirs",
-      "vendor/bin/phpunit -c dev/test/unit/phpunit.xml.dist dev/test/unit/ --coverage-html temp/coverage/html --coverage-clover temp/coverage/xml/codacy.xml"
-    ],
-    "phpcs": [
-      "vendor/bin/phpcs --standard=PSR2 --severity=1 src"
-    ],
-    "tests": [
-      "@phpunit",
-      "@phpcs"
-    ],
-    "post-autoload-dump": [
-      "@tests"
-    ]
-  }
 }
