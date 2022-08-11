@@ -188,6 +188,7 @@ class DataObject implements DataObjectInterface, \ArrayAccess
      * @param string $offset
      * @param mixed $value
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         return $this->setData($offset, $value);
@@ -200,6 +201,7 @@ class DataObject implements DataObjectInterface, \ArrayAccess
      * @param string $offset
      * @return boolean
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return $this->hasData($offset);
@@ -211,6 +213,7 @@ class DataObject implements DataObjectInterface, \ArrayAccess
      * @link http://www.php.net/manual/en/arrayaccess.offsetunset.php
      * @param string $offset
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         return $this->unsetData($offset);
@@ -223,6 +226,7 @@ class DataObject implements DataObjectInterface, \ArrayAccess
      * @param string $offset
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->getData($offset);
@@ -242,3 +246,4 @@ class DataObject implements DataObjectInterface, \ArrayAccess
         return $result;
     }
 }
+
